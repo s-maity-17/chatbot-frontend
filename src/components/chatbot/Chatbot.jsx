@@ -8,20 +8,14 @@ import {
   Input,
   Button,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import "./Chatbot.css";
 import ConnectBud from "../../assets/ConnectBud.png";
 import dataset from "../../dataset.json";
-import * as tf from "@tensorflow/tfjs";
-// const axios = require("axios");
-import axios from 'axios'
-// import * as model from '../../model';
-// import * as qna from "@tensorflow-models/qna";
-// import { trainingData } from "../../dataModel";
-// import MyLoader from "../loder/Typing";
+import axios from "axios";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -56,23 +50,9 @@ const Chatbot = () => {
   const [userInput, setUserInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState("");
-
-  // Load the custom chatbot model
-  const model = tf.loadLayersModel("localstorage://my-model-1");
-
-  // const [ans, setAns] = useState();
-  // const [model, setModel] = useState(null);
-
-  // load tensorflow model
-  // const loadModel = async () => {
-  //   const loadedModel = await qna.load();
-  //   setModel(loadedModel);
-  //   console.log("loadedModel", loadedModel);
-  // };
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    // loadModel();
-    // console.log("dataset", dataset[1].option);
     setMessages([{ text: dataset[0].answer, user: false, menulist: [] }]);
     setMessages((prev) => [
       ...prev,
@@ -81,7 +61,6 @@ const Chatbot = () => {
   }, []);
 
   useEffect(() => {
-    // console.log("selectedMenu", selectedMenu);
     if (selectedMenu?.length) {
       setMessages((prev) => [
         ...prev,
@@ -90,30 +69,37 @@ const Chatbot = () => {
     }
   }, [selectedMenu]);
 
-  const askBot = async () => {
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behaviour: "smooth" });
+    }
+  }, [messages]);
+
+  const askBot = async (e) => {
+    e.preventDefault();
     if (!userInput.trim()) return;
-    
+
     console.log("userInput", userInput);
     const userMessage = { text: userInput, user: true };
     setMessages((prev) => [...prev, userMessage]);
     // Axios POST request
     axios
-      .post("http://127.0.0.1:5000/chat-bot", {'question':userInput})
+      .post("http://127.0.0.1:5000/chat-bot", { question: userInput })
       .then((response) => {
         console.log("Response:", response.data.answer);
         // Handle response data here
         const botMsg = {
-                text: response.data.answer,
-                user: false,
-                menulist: [],
-              };
-              setMessages((prev) => [...prev, botMsg]);
+          text: response.data.answer,
+          user: false,
+          menulist: [],
+        };
+        setMessages((prev) => [...prev, botMsg]);
       })
       .catch((error) => {
         console.error("Error:", error);
         // Handle errors here
       });
-      setUserInput("");
+    setUserInput("");
     // setTimeout(
     //   function () {
     //     setIsLoading(true);
@@ -130,23 +116,6 @@ const Chatbot = () => {
     //   },
     //   [2000]
     // );
-
-    // setUserInput("");
-    // console.log("dataset", dataset);
-    // if (model !== null) {
-    //   const answers = await model.findAnswers(userInput, trainingData);
-    //   console.log("answers123", answers);
-    // }
-
-    // Convert user input to tensor
-    const inputTensor = tf.tensor2d([userInput], [1, 1]);
-    console.log("inputTensor", inputTensor);
-    // Get model prediction
-    const outputTensor = await model.predict(inputTensor);
-    console.log("outputTensor", outputTensor);
-    // Convert output tensor to text
-    const botResponse = await outputTensor.data();
-    console.log("botResponse", botResponse);
   };
 
   return (
@@ -253,26 +222,29 @@ const Chatbot = () => {
                     ))
                   : null}
               </div>
+              <div ref={bottomRef}></div>
             </>
           ))}
         </Box>
       </Box>
       <Divider />
       {/* user input section */}
-      <Box className="chat-footer">
-        <Input
-          type="text"
-          placeholder="Type Message here..."
-          sx={{ width: "80%", marginLeft: "20px" }}
-          disableUnderline
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          // disabled={isDisabled}
-        />
-        <IconButton sx={{ width: "10%", color: "green" }} onClick={askBot}>
-          <SendIcon />
-        </IconButton>
-      </Box>
+      <form onSubmit={askBot}>
+        <Box className="chat-footer">
+          <Input
+            type="text"
+            placeholder="Type Message here..."
+            sx={{ width: "80%", marginLeft: "20px" }}
+            disableUnderline
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            // disabled={isDisabled}
+          />
+          <IconButton sx={{ width: "10%", color: "green" }} type="submit">
+            <SendIcon />
+          </IconButton>
+        </Box>
+      </form>
     </Box>
   );
 };
