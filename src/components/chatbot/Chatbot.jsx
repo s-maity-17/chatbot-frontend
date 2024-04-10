@@ -6,7 +6,7 @@ import {
   Divider,
   IconButton,
   Input,
-  Button,
+  // Button,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -16,6 +16,8 @@ import "./Chatbot.css";
 import ConnectBud from "../../assets/ConnectBud.png";
 import dataset from "../../dataset.json";
 import axios from "axios";
+// import MyLoader from "../loder/MyLoader";
+// import TypingLoader from "../TypingIndicator/TypingLoader";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -49,8 +51,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Chatbot = () => {
   const [userInput, setUserInput] = useState("");
   const [messages, setMessages] = useState([]);
-  const [selectedMenu, setSelectedMenu] = useState("");
+  // const [selectedMenu, setSelectedMenu] = useState("");
   const bottomRef = useRef(null);
+  // const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     setMessages([{ text: dataset[0].answer, user: false, menulist: [] }]);
@@ -59,15 +62,6 @@ const Chatbot = () => {
       { text: dataset[1].answer, user: false, menulist: dataset[1].option },
     ]);
   }, []);
-
-  useEffect(() => {
-    if (selectedMenu?.length) {
-      setMessages((prev) => [
-        ...prev,
-        { text: selectedMenu, user: true, menulist: [] },
-      ]);
-    }
-  }, [selectedMenu]);
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -82,6 +76,7 @@ const Chatbot = () => {
     console.log("userInput", userInput);
     const userMessage = { text: userInput, user: true };
     setMessages((prev) => [...prev, userMessage]);
+    // setIsTyping(true);
     // Axios POST request
     axios
       .post("http://127.0.0.1:5000/chat-bot", { question: userInput })
@@ -98,7 +93,11 @@ const Chatbot = () => {
       .catch((error) => {
         console.error("Error:", error);
         // Handle errors here
-      });
+      })
+      .finally(
+        console.log("first")
+        // setIsTyping(false);
+      );
     setUserInput("");
     // setTimeout(
     //   function () {
@@ -193,6 +192,7 @@ const Chatbot = () => {
                     }}
                   />
                 ) : null}
+                {/* <MyLoader/> */}
                 <Typography
                   fontSize={14}
                   className={msg.user ? "user-msg" : "bot-msg"}
@@ -200,28 +200,28 @@ const Chatbot = () => {
                   {msg.text}
                 </Typography>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: 2,
-                  justifyContent: "space-evenly",
-                }}
-              >
-                {msg.menulist
-                  ? msg.menulist.map((item, index) => (
-                      <Button
-                        key={index}
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                        onClick={() => setSelectedMenu(item)}
-                        style={{ fontSize: "12px" }}
-                      >
-                        {item}
-                      </Button>
-                    ))
-                  : null}
-              </div>
+              {/* <div
+                    style={{
+                      display: "flex",
+                      gap: 2,
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    {msg.menulist
+                      ? msg.menulist.map((item, index) => (
+                          <Button
+                            key={index}
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            onClick={() => setSelectedMenu(item)}
+                            style={{ fontSize: "12px" }}
+                          >
+                            {item}
+                          </Button>
+                        ))
+                      : null}
+                  </div> */}
               <div ref={bottomRef}></div>
             </>
           ))}

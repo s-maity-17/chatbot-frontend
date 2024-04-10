@@ -1,4 +1,4 @@
-import './Typing.css';
+import './MyLoader.css';
 
 const MyLoader = () => {
   return (
