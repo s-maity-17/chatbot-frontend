@@ -1,37 +1,35 @@
 [
-    {
-       "question":"Hi, Welcome to ConnectBud.",
-       "answer":"Hi, Welcome to ConnectBud."
-    },
-    {
-        "question":"How can we help you today?",
-        "answer":"How can we help you today?",
-        "option":["Hire a Tutor","Register as Tutor","Something else ?"]
-     },
-     {
-        "question":"Hire a Tutor",
-        "answer":"Book a Demo Class",
-        "option":["Book a Demo Class"]
-     },
-     {
-        "question":"Register as Tutor",
-        "answer":"Link https://www.connectbud.com/login",
-        "option":["https://www.connectbud.com/login"]
-     },
-     {
-      "question":"What are the qualifications of your student tutors?",
-      "answer":"ConnectBud tutors are some of the brightest students who are currently studying in the top engineering colleges pursuing B.Tech, M. Tech, B.Sc. and M.Sc. In terms of their subject knowledge, communication skills and a deep understanding of the cutting-edge coding technologies, they are the most updated tutors.",
-      "option":[]
-     },
-     {
-      "question":"Does my child need to have any prior coding experience?",
-      "answer":"Kids aged 7 to 16, without any prior experience can learn coding. If your child is 7 years old, then she/he is capable of grasping at least beginner’s coding concepts. Today’s kids intuitively grasp programming concepts right away without ever having any level of prior experience.",
-      "option":[]
-     },
-     {
-      "question":"Who are you?",
-      "answer":"Kids aged 7 to 16, ",
-      "option":[]
-     }
-
+   {
+      "question": "Hi, Welcome to ConnectBud. How can I help you today?",
+      "answer": "Hi, Welcome to ConnectBud. How can I help you today?"
+   },
+   {
+      "question": "Hire a Tutor",
+      "answer": "Book a Demo Class",
+      "option": [
+         "Book a Demo Class"
+      ]
+   },
+   {
+      "question": "Register as Tutor",
+      "answer": "Link https://www.connectbud.com/login",
+      "option": [
+         "https://www.connectbud.com/login"
+      ]
+   },
+   {
+      "question": "What are the qualifications of your student tutors?",
+      "answer": "ConnectBud tutors are some of the brightest students who are currently studying in the top engineering colleges pursuing B.Tech, M. Tech, B.Sc. and M.Sc. In terms of their subject knowledge, communication skills and a deep understanding of the cutting-edge coding technologies, they are the most updated tutors.",
+      "option": []
+   },
+   {
+      "question": "Does my child need to have any prior coding experience?",
+      "answer": "Kids aged 7 to 16, without any prior experience can learn coding. If your child is 7 years old, then she/he is capable of grasping at least beginner’s coding concepts. Today’s kids intuitively grasp programming concepts right away without ever having any level of prior experience.",
+      "option": []
+   },
+   {
+      "question": "Who are you?",
+      "answer": "Kids aged 7 to 16, ",
+      "option": []
+   }
 ]
