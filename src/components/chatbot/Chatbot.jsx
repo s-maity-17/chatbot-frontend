@@ -6,7 +6,6 @@ import {
   Divider,
   IconButton,
   Input,
-  // Button,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -16,8 +15,6 @@ import "./Chatbot.css";
 import ConnectBud from "../../assets/ConnectBud.png";
 import dataset from "../../dataset.json";
 import axios from "axios";
-// import MyLoader from "../loder/MyLoader";
-// import TypingLoader from "../TypingIndicator/TypingLoader";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -51,16 +48,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Chatbot = () => {
   const [userInput, setUserInput] = useState("");
   const [messages, setMessages] = useState([]);
-  // const [selectedMenu, setSelectedMenu] = useState("");
   const bottomRef = useRef(null);
-  // const [isTyping, setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     setMessages([{ text: dataset[0].answer, user: false, menulist: [] }]);
-    setMessages((prev) => [
-      ...prev,
-      { text: dataset[1].answer, user: false, menulist: dataset[1].option },
-    ]);
   }, []);
 
   useEffect(() => {
@@ -88,7 +80,16 @@ const Chatbot = () => {
           user: false,
           menulist: [],
         };
-        setMessages((prev) => [...prev, botMsg]);
+        // setMessages((prev) => [...prev, botMsg]);
+        const typingTimer = setTimeout(() => {
+          setIsTyping(true);
+          setTimeout(() => {
+            setIsTyping(false);
+            setMessages((prev) => [...prev, botMsg]);
+          }, 2000); // Adjust the duration of typing animation as needed
+        }, 100); // Delay before typing animation starts
+
+        return () => clearTimeout(typingTimer);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -99,22 +100,6 @@ const Chatbot = () => {
         // setIsTyping(false);
       );
     setUserInput("");
-    // setTimeout(
-    //   function () {
-    //     setIsLoading(true);
-    //     const botReply = dataset.filter(
-    //       (item) => item.question.toLowerCase() === userInput.toLowerCase()
-    //     );
-    //     console.log("botReply", botReply);
-    //     const botMsg = {
-    //       text: botReply[0].answer,
-    //       user: false,
-    //       menulist: botReply[0].option,
-    //     };
-    //     setMessages((prev) => [...prev, botMsg]);
-    //   },
-    //   [2000]
-    // );
   };
 
   return (
@@ -200,33 +185,12 @@ const Chatbot = () => {
                   {msg.text}
                 </Typography>
               </div>
-              {/* <div
-                    style={{
-                      display: "flex",
-                      gap: 2,
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    {msg.menulist
-                      ? msg.menulist.map((item, index) => (
-                          <Button
-                            key={index}
-                            variant="outlined"
-                            size="small"
-                            color="primary"
-                            onClick={() => setSelectedMenu(item)}
-                            style={{ fontSize: "12px" }}
-                          >
-                            {item}
-                          </Button>
-                        ))
-                      : null}
-                  </div> */}
               <div ref={bottomRef}></div>
             </>
           ))}
         </Box>
       </Box>
+      {isTyping && <div className=" typing">Assistant is typing...</div>}
       <Divider />
       {/* user input section */}
       <form onSubmit={askBot}>

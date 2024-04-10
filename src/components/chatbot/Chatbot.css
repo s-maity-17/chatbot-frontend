@@ -75,7 +75,15 @@ background: linear-gradient(90deg, rgba(100,169,223,1) 0%, rgba(108,174,219,1) 5
   justify-content: flex-end;
 }
 
+.typing {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: royalblue;
+  margin-left: 10px;
+}
+
 .typing::after {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: royalblue;
   content: '|';
   animation: blink 0.7s infinite;
 }
