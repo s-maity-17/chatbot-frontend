@@ -184,29 +184,30 @@ const Chatbot = ({ onClose }) => {
                   <Avatar
                     src={ConnectBud}
                     sx={{
-                      height: 20,
-                      width: 20,
-                      border: "1px solid black",
-                      // boxShadow: "2px 5px 10px -1px rgba(0, 0, 0, 1)",
+                      height: 25,
+                      width: 25,
+                      border: "0.5px solid black",
+                      boxShadow: "2px 5px 10px -1px rgba(0, 0, 0, 1)",
                       // marginBottom:'5px'
+                      marginTop: "15px",
+                      // backgroundColor:'#ede9e8'
                     }}
                   />
                 ) : null}
                 {/* <MyLoader/> */}
                 <div>
                   <Typography
-                    fontSize={14}
-                    className={msg.user ? "user-msg" : "bot-msg"}
-                  >
-                    {msg.text}
-                  </Typography>
-                  <Typography
-                    mt={1}
+                    // mt={1}
                     fontSize={11}
                     style={{ textAlign: msg.user ? "end" : "start" }}
                   >
                     {moment(msg.delivered_at).format("LT")}
-                    {/* {moment(msg.delivered_at).format("LT")} */}
+                  </Typography>
+                  <Typography
+                    fontSize={14}
+                    className={msg.user ? "user-msg" : "bot-msg"}
+                  >
+                    {msg.text}
                   </Typography>
                 </div>
               </div>
