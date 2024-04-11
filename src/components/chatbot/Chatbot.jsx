@@ -15,6 +15,7 @@ import "./Chatbot.css";
 import ConnectBud from "../../assets/ConnectBud.png";
 import dataset from "../../dataset.json";
 import axios from "axios";
+import moment from "moment";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -45,14 +46,21 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Chatbot = () => {
+const Chatbot = ({ onClose }) => {
   const [userInput, setUserInput] = useState("");
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
   const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
-    setMessages([{ text: dataset[0].answer, user: false, menulist: [] }]);
+    setMessages([
+      {
+        text: dataset[0].answer,
+        user: false,
+        menulist: [],
+        delivered_at: Date.now(),
+      },
+    ]);
   }, []);
 
   useEffect(() => {
@@ -66,7 +74,11 @@ const Chatbot = () => {
     if (!userInput.trim()) return;
 
     console.log("userInput", userInput);
-    const userMessage = { text: userInput, user: true };
+    const userMessage = {
+      text: userInput,
+      user: true,
+      delivered_at: Date.now(),
+    };
     setMessages((prev) => [...prev, userMessage]);
     // setIsTyping(true);
     // Axios POST request
@@ -77,6 +89,7 @@ const Chatbot = () => {
         // Handle response data here
         const botMsg = {
           text: response.data.answer,
+          delivered_at: Date.now(),
           user: false,
           menulist: [],
         };
@@ -140,12 +153,14 @@ const Chatbot = () => {
             marginRight: "10px",
             color: "#fff",
           }}
+          onClick={onClose}
         />
       </Box>
 
       {/* chat body */}
       <Box className="chat-body">
         <Box
+          id="chat-window"
           sx={{
             padding: "20px",
             margin: "5px",
@@ -178,13 +193,24 @@ const Chatbot = () => {
                   />
                 ) : null}
                 {/* <MyLoader/> */}
-                <Typography
-                  fontSize={14}
-                  className={msg.user ? "user-msg" : "bot-msg"}
-                >
-                  {msg.text}
-                </Typography>
+                <div>
+                  <Typography
+                    fontSize={14}
+                    className={msg.user ? "user-msg" : "bot-msg"}
+                  >
+                    {msg.text}
+                  </Typography>
+                  <Typography
+                    mt={1}
+                    fontSize={11}
+                    style={{ textAlign: msg.user ? "end" : "start" }}
+                  >
+                    {moment(msg.delivered_at).format("LT")}
+                    {/* {moment(msg.delivered_at).format("LT")} */}
+                  </Typography>
+                </div>
               </div>
+
               <div ref={bottomRef}></div>
             </>
           ))}
@@ -197,7 +223,7 @@ const Chatbot = () => {
         <Box className="chat-footer">
           <Input
             type="text"
-            placeholder="Type Message here..."
+            placeholder="Write your message here..."
             sx={{ width: "80%", marginLeft: "20px" }}
             disableUnderline
             value={userInput}
