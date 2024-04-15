@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import "./Chatbot.css";
 import ConnectBud from "../../assets/ConnectBud.png";
+import BotIcon from "../../assets/BotIcon.png";
 import dataset from "../../dataset.json";
 import axios from "axios";
 import moment from "moment";
@@ -182,7 +183,7 @@ const Chatbot = ({ onClose }) => {
               >
                 {!msg.user ? (
                   <Avatar
-                    src={ConnectBud}
+                    src={BotIcon}
                     sx={{
                       height: 25,
                       width: 25,
