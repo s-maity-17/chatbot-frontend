@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState } from "react";
-import { Fab, Typography } from "@mui/material";
+import { Fab } from "@mui/material";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import Chatbot from "./components/chatbot/Chatbot";
 import CloseIcon from "@mui/icons-material/Close";
@@ -30,7 +30,7 @@ const App = () => {
           <CloseIcon />
         ) : (
           <>
-            <Typography>Chat With Us </Typography> <ChatBubbleIcon />
+            <ChatBubbleIcon />
           </>
         )}
       </Fab>

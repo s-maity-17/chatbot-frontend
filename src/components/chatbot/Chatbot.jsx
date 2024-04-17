@@ -3,11 +3,11 @@ import {
   Box,
   Badge,
   Typography,
-  Divider,
   IconButton,
   Input,
   Chip,
 } from "@mui/material";
+import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined";
 import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
@@ -53,7 +53,6 @@ const Chatbot = ({ onClose }) => {
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
   const [isTyping, setIsTyping] = useState(false);
-  const [isAccepted, setIsAccepted] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
@@ -169,7 +168,7 @@ const Chatbot = ({ onClose }) => {
                 fontFamily={"sans-serif"}
                 fontSize={12}
               >
-                Online
+                {isTyping ? <div className=" typing">typing...</div> : "Online"}
               </Typography>
             </Box>
           </Box>
@@ -215,7 +214,7 @@ const Chatbot = ({ onClose }) => {
                         width: 25,
                         border: "0.5px solid black",
                         boxShadow: "2px 5px 10px -1px rgba(0, 0, 0, 1)",
-                        marginTop: "15px",
+                        marginTop: "1px",
                       }}
                     />
                   ) : null}
@@ -250,12 +249,18 @@ const Chatbot = ({ onClose }) => {
                       </Box>
                     ) : null}
                     <Typography
-                      // mt={1}
+                      gap={1}
                       fontSize={12}
                       fontWeight={550}
                       style={{ textAlign: msg.user ? "end" : "start" }}
                     >
                       {moment(msg.delivered_at).format("LT")}
+                      {msg.user ? (
+                        <DoneAllOutlinedIcon
+                          sx={{ fontSize: "15px", marginLeft: "3px" }}
+                          color={"primary"}
+                        />
+                      ) : null}
                     </Typography>
                   </div>
                 </div>
@@ -264,8 +269,8 @@ const Chatbot = ({ onClose }) => {
             ))}
           </Box>
         </Box>
-        {isTyping && <div className=" typing">Assistant is typing...</div>}
-        <Divider />
+        {/* {isTyping && <div className=" typing">Assistant is typing...</div>} */}
+        {/* <Divider /> */}
         {/* user input section */}
         <form
           onSubmit={(e) => {
