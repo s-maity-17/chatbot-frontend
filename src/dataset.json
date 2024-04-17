@@ -1,7 +1,7 @@
 [
    {
-      "question": "Hi, Welcome to ConnectBud. How can I help you today?",
-      "answer": "Hi, Welcome to ConnectBud. How can I help you today?"
+      "question": "Hi, Welcome to ConnectBud. Do you want help with any of these services?",
+      "answer": "Hi, Welcome to ConnectBud. Do you want help with any of these services?"
    },
    {
       "question": "Hire a Tutor",
